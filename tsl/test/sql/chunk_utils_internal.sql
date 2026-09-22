@@ -377,6 +377,12 @@ SELECT * from ht_try WHERE  timec > '2000-01-01 01:00' and timec < '2022-01-01 0
 
 SELECT * from ht_try WHERE timec > '2020-01-01 01:00' ORDER BY 1;
 
+--TEST no transaction id is assigned when querying a hypertable with an OSM chunk
+BEGIN;
+SELECT * from ht_try WHERE timec = '2020-01-01 01:00' ORDER BY 1;
+SELECT txid_current_if_assigned() IS NULL;
+COMMIT;
+
 -- test ordered append
 BEGIN;
 -- before updating the ranges
